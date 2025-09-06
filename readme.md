@@ -38,7 +38,7 @@ The model is trained using supervised machine learning techniques, and the appli
 Below is a snapshot of the interactive dashboard generated during the analysis:
 
 <p align="center">
-  <img src="Screenshot 140529.png" alt="Loan Prediction Dashboard" width="700"/>
+  <img src="Screenshort.png" alt="Loan Prediction Dashboard" width="700"/>
 </p>
 
 ## 📁 Dataset
