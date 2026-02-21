@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - ALLOWED_ORIGINS=http://localhost:8080,http://localhost,http://127.0.0.1:8080
+      - LOG_LEVEL=INFO
+      - ARTIFACTS_PATH=./loan_model_artifacts.pkl
+    restart: always
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:8000
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: always

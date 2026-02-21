@@ -1,0 +1,226 @@
+/**
+ * index.css — Complete Global Stylesheet (Premium Branded)
+ *
+ * This file is the single source of global CSS for the entire loan prediction app.
+ * Includes: Tailwind layers, design tokens, component styles, animations, scrollbars, selection, responsive, print utilities.
+ */
+
+/* ── Tailwind core layers ──────────────────────────────────────────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens (CSS custom properties) ───────────────────────────────── */
+@layer base {
+:root {
+  /* ── Core ───────────────────────────── */
+  --background: 210 25% 97%;        /* soft porcelain */
+  --foreground: 220 30% 18%;        /* refined navy */
+  --muted: 210 18% 94%;             /* subtle muted surfaces */
+
+  /* ── Surface Layers ───────────────────────── */
+  --card: 0 0% 100%;                 
+  --card-foreground: 220 30% 18%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 30% 18%;
+  --secondary: 210 20% 92%;
+  --secondary-foreground: 220 25% 25%;
+
+  /* ── Primary / Brand Indigo ──────────────── */
+  --primary: 232 65% 52%;
+  --primary-foreground: 0 0% 100%;
+  --primary-hover: 232 65% 48%;
+  --primary-active: 232 65% 44%;
+
+  /* ── Prediction Status ───────────────────── */
+  --success: 158 45% 38%;
+  --success-foreground: 0 0% 100%;
+  --warning: 40 40% 55%;
+  --warning-foreground: 0 0% 0%;
+  --destructive: 0 65% 52%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* ── Borders / Inputs ────────────────────── */
+  --border: 210 18% 88%;
+  --input: 210 18% 92%;
+  --ring: 232 65% 52%;
+
+  /* ── Premium Accent / Luxury ────────────── */
+  --luxury: 38 55% 70%;
+  --luxury-foreground: 220 30% 18%;
+
+  /* ── Sidebar / Navigation ───────────────── */
+  --sidebar-background: 232 28% 10%;
+  --sidebar-foreground: 210 20% 92%;
+  --sidebar-primary: 232 65% 52%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 210 20% 16%;
+  --sidebar-border: 210 18% 88%;
+  --sidebar-ring: 232 65% 52%;
+
+  /* ── Border radius ────────────────── */
+  --radius: 0.85rem;
+
+  /* ── Shadows / Elevation ───────────────── */
+  --shadow-card: 0 2px 12px rgba(20,30,60,0.05);
+  --shadow-hover: 0 4px 16px rgba(20,30,60,0.08);
+}
+
+/* Dark mode (optional, mirrors light mode for now) */
+.dark {
+  --background: 220 30% 6%;         /* deep dark obsidian */
+  --foreground: 210 20% 98%;        /* ghost white text */
+  --muted: 220 25% 12%;             /* dark muted surfaces */
+  --muted-foreground: 215 15% 65%;
+
+  --card: 220 30% 8%;               /* slightly lighter card background */
+  --card-foreground: 210 20% 98%;
+  --popover: 220 30% 8%;
+  --popover-foreground: 210 20% 98%;
+
+  --secondary: 220 20% 15%;
+  --secondary-foreground: 210 20% 98%;
+
+  --primary: 232 65% 65%;           /* slightly softer blue for dark mode */
+  --primary-foreground: 0 0% 100%;
+  
+  --border: 220 20% 18%;            /* refined dark borders */
+  --input: 220 20% 18%;
+  --ring: 232 65% 65%;
+
+  --sidebar-background: 220 30% 4%;
+  --sidebar-foreground: 210 20% 92%;
+  --sidebar-border: 220 20% 18%;
+
+  /* Shadow overrides for dark mode */
+  --shadow-card: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-hover: 0 8px 20px rgba(0,0,0,0.6);
+}
+}
+
+/* ── Base Layer Overrides ────────────────────────────────────────────────── */
+@layer base {
+* { @apply border-border; }
+
+body {
+  @apply bg-background text-foreground;
+  min-height: 100vh;
+}
+
+#root { min-height: 100vh; }
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.animate-fade-in  { animation: fadeIn 0.4s ease-out forwards; }
+.animate-slide-in { animation: slideIn 0.3s ease-out forwards; }
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+.btn-primary {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-radius: var(--radius);
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+.btn-primary:hover { background-color: hsl(var(--primary-hover)); }
+.btn-primary:active { background-color: hsl(var(--primary-active)); transform: scale(0.98); }
+
+.btn-success { background-color: hsl(var(--success)); color: hsl(var(--success-foreground)); }
+.btn-warning { background-color: hsl(var(--warning)); color: hsl(var(--warning-foreground)); }
+.btn-destructive { background-color: hsl(var(--destructive)); color: hsl(var(--destructive-foreground)); }
+
+/* ── Loan Cards ─────────────────────────────────────────────────────────── */
+.loan-card {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.loan-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+.loan-card.success { border-color: hsl(var(--success)); }
+.loan-card.warning { border-color: hsl(var(--warning)); }
+.loan-card.destructive { border-color: hsl(var(--destructive)); }
+
+/* ── Progress Steps ─────────────────────────────────────────────────────── */
+.progress-bar {
+  height: 0.5rem;
+  border-radius: var(--radius);
+  background-color: hsl(var(--secondary));
+  overflow: hidden;
+}
+.progress-bar-fill {
+  background-color: hsl(var(--primary));
+  width: 0%;
+  transition: width 0.8s ease-out;
+}
+
+/* ── Sidebar / Navigation ───────────────────────────────────────────────── */
+.sidebar {
+  background-color: hsl(var(--sidebar-background));
+  color: hsl(var(--sidebar-foreground));
+  border-right: 1px solid hsl(var(--sidebar-border));
+}
+.sidebar .nav-item.primary { color: hsl(var(--sidebar-primary)); }
+.sidebar .nav-item.accent { color: hsl(var(--sidebar-accent)); }
+
+/* ── Input / Focus Rings ─────────────────────────────────────────────────── */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px hsla(var(--ring), 0.5);
+  border-color: hsl(var(--ring));
+}
+
+/* ── Premium Badges / KPI ───────────────────────────────────────────────── */
+.badge-luxury {
+  background-color: hsl(var(--luxury));
+  color: hsl(var(--luxury-foreground));
+  border-radius: var(--radius);
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+/* ── Hover / Button Feedback ────────────────────────────────────────────── */
+button { transition: all 0.15s ease; }
+button:active { transform: scale(0.98); }
+
+/* ── Loan Card Hover ────────────────────────────────────────────────────── */
+.loan-card { transition: all 0.2s ease; }
+.loan-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+
+/* ── Custom Scrollbar (WebKit) ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: #f0f0f0; }
+::-webkit-scrollbar-thumb  { background: #c0c0c0; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
+
+/* ── Text Selection ─────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(0,0,0,0.15);
+  color: inherit;
+}
+
+/* ── Smooth Scroll ──────────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+/* ── Responsive Typography ──────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  html { font-size: 14px; }
+}
+
+/* ── Print Utilities ─────────────────────────────────────────────────────── */
+@media print { .no-print { display: none !important; } }
