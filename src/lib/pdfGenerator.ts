@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf'
-import 'jspdf-autotable'
+import autoTable from 'jspdf-autotable'
 import type { LoanPredictResponse } from './types'
 import { formatCurrency } from './utils'
 
@@ -47,7 +47,7 @@ export const generateLoanReport = (
     ['Processing Time', `${result.processing_time_ms.toFixed(0)} ms`]
   ]
 
-  doc.autoTable({
+  autoTable(doc, {
     startY: 55,
     head: [['Field', 'Value']],
     body: summaryData,
@@ -73,7 +73,7 @@ export const generateLoanReport = (
     ['High Risk Flag', cp.is_high_risk_flag ? 'Yes' : 'No']
   ]
 
-  doc.autoTable({
+  autoTable(doc, {
     startY: currentY + 5,
     head: [['Metric', 'Details']],
     body: financialData,
@@ -95,7 +95,7 @@ export const generateLoanReport = (
       ['Monthly EMI', formatCurrency(result.monthly_emi)]
     ]
 
-    doc.autoTable({
+    autoTable(doc, {
       startY: currentY + 5,
       body: sanctionData,
       theme: 'plain',
