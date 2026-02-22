@@ -13,6 +13,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import './index.css'   // global styles, Tailwind base layers, CSS variables
 import App from './App' // root application component
 
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <App />
+      <Analytics />
     </BrowserRouter>
   </StrictMode>,
 )
