@@ -130,12 +130,13 @@ function App() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Backend health probe ──────────────────────────────────────────────────
-  const retryHealthCheck = useCallback(() => {
+  // FIX: showSuccessToast=false by default — toast only shows on manual retry
+  const retryHealthCheck = useCallback((showSuccessToast = false) => {
     setBackendOnline(null)
     checkHealth()
       .then(h => {
         setBackendOnline(h.model_loaded)
-        if (h.model_loaded) toast.success('Backend connected successfully!')
+        if (h.model_loaded && showSuccessToast) toast.success('Backend connected successfully!')
       })
       .catch(() => {
         setBackendOnline(false)
@@ -143,6 +144,7 @@ function App() {
       })
   }, [])
 
+  // Auto health check on mount — no toast
   useEffect(() => {
     retryHealthCheck()
   }, [retryHealthCheck])
@@ -161,6 +163,9 @@ function App() {
   useEffect(() => { LS.set(LS_KEYS.result, JSON.stringify(result)) }, [result])
   useEffect(() => { LS.set(LS_KEYS.currency, currency) }, [currency])
 
+  // ── Helpers ───────────────────────────────────────────────────────────────
+
+  const isHomePath = location.pathname === '/' || location.pathname === '/select-loan'
 
   // ── Handlers ──────────────────────────────────────────────────────────────
 
@@ -239,12 +244,13 @@ function App() {
     }
   }, [formData, backendOnline, currency, navigate])
 
+  // FIX: navigate to '/' instead of '/select-loan'
   const resetForm = useCallback(() => {
     setResult(null)
     setFormData(initialFormState)
     clearAppStorage()
     LS.set(LS_KEYS.version, STORAGE_VERSION)
-    navigate('/select-loan')
+    navigate('/')
   }, [navigate])
 
   const handleViewHistoryItem = useCallback((item: HistoryItem) => {
@@ -282,6 +288,7 @@ function App() {
               Skip to main content
             </a>
 
+            {/* FIX: use startsWith('/details') for offline banner */}
             {backendOnline === false && location.pathname.startsWith('/details') && (
               <div
                 role="alert"
@@ -297,7 +304,7 @@ function App() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={retryHealthCheck}
+                  onClick={() => retryHealthCheck(true)} // FIX: pass true for manual retry toast
                   className="h-7 px-3 text-[10px] bg-background border-border hover:bg-accent"
                 >
                   <RotateCcw className="h-3 w-3 mr-1" />
@@ -313,20 +320,25 @@ function App() {
             />
 
             <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" tabIndex={-1}>
+              {/* FIX: handle both '/' and '/select-loan' for step 1 */}
               <ProgressSteps
                 currentStep={
-                  location.pathname === '/select-loan' ? 1 :
+                  isHomePath ? 1 :
                     location.pathname.startsWith('/details') ? 2 : 3
                 }
               />
 
               <Routes>
-                <Route path="/select-loan" element={
+                {/* FIX: root path '/' shows homepage directly — clean URL */}
+                <Route path="/" element={
                   <>
                     <SEO title="Select Loan Type" description="Pick the perfect loan for your needs." />
                     <LoanTypeSelection onSelectLoan={handleLoanTypeSelect} />
                   </>
                 } />
+
+                {/* FIX: /select-loan redirects to '/' for old bookmarks */}
+                <Route path="/select-loan" element={<Navigate to="/" replace />} />
 
                 <Route path="/details/:loanType?" element={
                   <>
@@ -366,7 +378,7 @@ function App() {
                       />
                     </>
                   ) : (
-                    <Navigate to="/select-loan" replace />
+                    <Navigate to="/" replace />
                   )
                 } />
 
@@ -382,7 +394,7 @@ function App() {
                   </>
                 } />
 
-                <Route path="*" element={<Navigate to="/select-loan" replace />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </main>
           </div>
