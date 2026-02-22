@@ -282,7 +282,7 @@ function App() {
               Skip to main content
             </a>
 
-            {backendOnline === false && location.pathname === '/details' && (
+            {backendOnline === false && location.pathname.startsWith('/details') && (
               <div
                 role="alert"
                 aria-live="polite"
@@ -316,7 +316,7 @@ function App() {
               <ProgressSteps
                 currentStep={
                   location.pathname === '/select-loan' ? 1 :
-                    location.pathname === '/details' ? 2 : 3
+                    location.pathname.startsWith('/details') ? 2 : 3
                 }
               />
 
