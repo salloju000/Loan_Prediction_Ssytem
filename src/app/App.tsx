@@ -30,6 +30,7 @@ import { initialFormState } from '../lib/types'
 import { getBanksByLoanType, createEligibilityRequestPayload, resolveConfig, parseFormNumber } from '../lib/utils'
 import { predictLoanEligibility, ApiRequestError, checkHealth } from '../lib/api'
 import { buildMockResult, isValidResult } from '../lib/mockBuilder'
+import { Analytics } from '@vercel/analytics/react'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONSTANTS
@@ -389,6 +390,7 @@ function App() {
           <Toaster richColors position="top-right" />
         </ErrorBoundary>
       </ThemeProvider>
+      <Analytics />
     </HelmetProvider>
   )
 }
