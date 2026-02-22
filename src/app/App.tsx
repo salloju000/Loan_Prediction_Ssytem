@@ -332,7 +332,7 @@ function App() {
                 {/* FIX: root path '/' shows homepage directly — clean URL */}
                 <Route path="/" element={
                   <>
-                    <SEO title="Select Loan Type" description="Pick the perfect loan for your needs." />
+                    <SEO title="Loan Prediction System" description="Check your loan eligibility instantly." />
                     <LoanTypeSelection onSelectLoan={handleLoanTypeSelect} />
                   </>
                 } />
