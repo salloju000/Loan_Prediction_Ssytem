@@ -13,6 +13,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { Routes, Route, useNavigate, Navigate, useLocation } from 'react-router-dom'
 import { toast, Toaster } from 'sonner'
 import { HelmetProvider } from 'react-helmet-async'
+import { Analytics } from '@vercel/analytics/react'
 import { ThemeProvider } from '../components/ThemeProvider'
 import { SEO } from '../components/ui/SEO'
 import { ErrorBoundary } from '../components/pages/ErrorBoundary'
@@ -399,6 +400,7 @@ function App() {
             </main>
           </div>
           <Toaster richColors position="top-right" />
+          <Analytics />
         </ErrorBoundary>
       </ThemeProvider>
     </HelmetProvider>
